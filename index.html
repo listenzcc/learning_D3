@@ -1,41 +1,40 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>HelloWorld</title>
-    <script src="d3/d3.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <!-- Title div -->
-    <div id="title">
-      <p>Hello World 1</p>
-      <p>Hello World 2</p>
-      <script>
+<head>
+  <meta charset="utf-8">
+  <title>HelloWorld</title>
+  <script src="d3/d3.js" charset="utf-8"></script>
+</head>
+<body>
+  <!-- Title div -->
+  <div id="title">
+    <p>Hello World 1</p>
+    <p>Hello World 2</p>
+    <script>
       d3.select("p").style("background-color", "gray");
       d3.selectAll("p").style("color", "pink");
-      </script>
-    </div>
-    <!-- Draw div -->
-    <div id="main">
-      <p>Draw something here.</p>
-      <script>
+    </script>
+  </div>
+  <!-- Draw div -->
+  <div id="main">
+    <p>Draw something here.</p>
+    <script>
       d3.select("body")
       .selectAll("p")
       .data([4, 8, 15, 16, 23, 42])
       .enter().append("p")
       .text(function(d) { return "I'm number " + d + "!"; });
-      </script>
-    </div>
-    <!-- Multi div -->
-    <div id="Ford">0</div>
-    <div id="Jarrah">0</div>
-    <div id="Kwon">0</div>
-    <div id="Locke">0</div>
-    <div id="Reyes">0</div>
-    <div id="Shephard">0</div>
-    <div id="What_ever">0</div>
-    <script>
+    </script>
+  </div>
+  <!-- Multi div -->
+  <div id="Ford">0</div>
+  <div id="Jarrah">0</div>
+  <div id="Kwon">0</div>
+  <div id="Locke">0</div>
+  <div id="Reyes">0</div>
+  <div id="Shephard">0</div>
+  <div id="What_ever">0</div>
+  <script>
     const data = [
-    {name: "Undefined", number: '--'},
     {name: "Locke", number: 4},
     {name: "Reyes", number: 8},
     {name: "Ford", number: 15},
@@ -44,25 +43,31 @@
     {name: "Kwon", number: 42},
     ];
     d3.selectAll("div")
-    .data(data, function(d) { console.log(d); console.log(this.id); return d ? d.name : this.id; })
+    .data(data, function(d) {
+      console.log('-')
+      console.log(d);
+      console.log(this.id);
+      console.log('--')
+      return d ? d.name : this.id;
+    })
     .text(d => d.name + '--' + d.number);
-    </script>
-    <!-- SVG 01 -->
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
-    </svg>
-    <script>
+  </script>
+  <!-- SVG 01 -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="red" />
+  </svg>
+  <script>
     d3.select("circle")
     .join(
-    enter => enter.append("circle"),
-    update => update,
-    exit => exit.remove()
-    )
+      enter => enter.append("circle"),
+      update => update,
+      exit => exit.remove()
+      )
     .attr("fill", "pink")
     .attr("stroke", "gray");
-    </script>
-    <!-- SVG 02 -->
-    <script>
+  </script>
+  <!-- SVG 02 -->
+  <script>
     var width = 300;
     var height = 300;
     var svg = d3.select("body")
@@ -70,6 +75,6 @@
     .attr("width", width)
     .attr("height", height)
     .attr("background-color", "gray");
-    </script>
-  </body>
+  </script>
+</body>
 </html>
