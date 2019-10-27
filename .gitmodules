@@ -1,0 +1,3 @@
+[submodule "d3_github"]
+	path = d3_github
+	url = https://github.com/d3/d3.git
