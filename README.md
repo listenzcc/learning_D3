@@ -7,8 +7,8 @@
 D3.js is a JavaScript library for manipulating documents based on data.  
 
 * Github: [https://github.com/d3/d3](https://github.com/d3/d3)  
+* API: [https://github.com/d3/d3/blob/master/API.md](https://github.com/d3/d3/blob/master/API.md)
 * Link: `<script src="https://d3js.org/d3.v5.min.js"></script>`  
-* Download: [Download url](https://github.com/d3/d3/zipball/master)
 
 # Introduction
 
@@ -19,5 +19,5 @@ D3 allows you to bind arbitrary data to a Document Object Model (DOM), and then 
 
 `w3.org` has everything you need to know about [DOM](http://w3.org/TR/?tag=dom).
 
-For example, you can use D3 to generate an HTML table from an array of numbers.  
+For example, you can `use D3 to generate an HTML table from an array of numbers` (See [this example](./Create_HTML_table_using_d3js_and_JSONCreate_HTML_Table/index.html) You may have to run it by node since it calls local json file).  
 Or, use the same data to create an interactive SVG bar chart with smooth transitions and interaction.
