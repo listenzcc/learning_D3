@@ -33,6 +33,7 @@ d3.json('data.json', function (error,data) {
         return table;
     }
     
+    console.log('x')
     // render the table(s)
     tabulate(data, ['date', 'close']); // 2 column table
     
