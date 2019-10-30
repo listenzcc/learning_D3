@@ -21,7 +21,7 @@ d3.json('data.json').then(function(data, error) {
         console.log(tbody) // Parent is [html.gr__localhost]
         console.log(tbody.selectAll('tr'))  // Parent is [tbody]
         var rows = tbody.selectAll('tr') // Select all 'tr' from tbody. It can return empty but empty here is necessary.
-        .data(data)
+        .data(data) // Bound data on rows
         .enter()
         .append('tr');
 
@@ -29,6 +29,7 @@ d3.json('data.json').then(function(data, error) {
         var cells = rows.selectAll('td')
         .data(function (row) {
             console.log(row)
+            // Does this mean dict must be mapped ?
             return columns.map(function (column) {
                 console.log('    ' + column + row[column])
                 // Return a dict object
