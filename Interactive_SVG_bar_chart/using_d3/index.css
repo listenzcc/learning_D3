@@ -19,9 +19,9 @@ svg {
     height: 100%;
 }
 
-.bar {
+/* .bar {
     fill: #80cbc4;
-}
+} */
 
 text {
     font-size: 12px;
@@ -38,7 +38,7 @@ line {
 
 line#limit {
     stroke: #FED966;
-    stroke-width: 3;
+    stroke-width: 2;
     stroke-dasharray: 3 6;
 }
 
@@ -53,7 +53,8 @@ line#limit {
 
 text.divergence {
     font-size: 14px;
-    fill: #2F4A6D;
+    /* fill: #2F4A6D; */
+    fill: #ffffff;
 }
 
 text.value {
