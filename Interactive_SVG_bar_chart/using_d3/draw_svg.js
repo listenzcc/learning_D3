@@ -1,5 +1,4 @@
 window.onload=function(){
-    // https://insights.stackoverflow.com/survey/2018/#technology-most-loved-dreaded-and-wanted-languages
     const sample = [
         {
             language: 'Rust',
