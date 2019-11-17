@@ -1,51 +1,51 @@
 [
     {
-        "lauguage": "Rust",
+        "language": "Rust",
         "value": 78.9,
         "color": "#000000"
     },
     {
-        "lauguage": "Kotlin",
+        "language": "Kotlin",
         "value": 75.1,
         "color": "#00a2ee"
     },
     {
-        "lauguage": "Python",
+        "language": "Python",
         "value": 68.0,
         "color": "#fbcb39"
     },
     {
-        "lauguage": "TypeScript",
+        "language": "TypeScript",
         "value": 67.0,
         "color": "#007bc8"
     },
     {
-        "lauguage": "Go",
+        "language": "Go",
         "value": 65.6,
         "color": "#65cedb"
     },
     {
-        "lauguage": "Swift",
+        "language": "Swift",
         "value": 65.1,
         "color": "#ff6e52"
     },
     {
-        "lauguage": "JavaScript",
+        "language": "JavaScript",
         "value": 61.9,
         "color": "#f9de3f"
     },
     {
-        "lauguage": "C#",
+        "language": "C#",
         "value": 60.4,
         "color": "#5d2f8e"
     },
     {
-        "lauguage": "F#",
+        "language": "F#",
         "value": 59.6,
         "color": "#008fc9"
     },
     {
-        "lauguage": "Clojure",
+        "language": "Clojure",
         "value": 59.6,
         "color": "#507dca"
     }
