@@ -36,7 +36,6 @@ Or, use the same data to create an **interactive SVG bar chart with smooth trans
 > SVG is an open standard developed by the World Wide Web Consortium (W3C) since 1999.  
 > Documents can be found in <https://developer.mozilla.org/en-US/docs/Web/SVG>
 
-
 ***
 
 ## Challenging practise
