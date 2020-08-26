@@ -1,0 +1,16 @@
+div#input_panel {
+  padding: 3px;
+  width: 500px;
+  outline: solid 1px;
+}
+
+button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+textarea#ta_template,
+textarea#ta_output {
+  width: 90%;
+  height: 100px;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+  <header>
+    <title>Demo of backend-free</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/submit.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </header>
+  <body>
+    <h1>Section 1</h1>
+    <div id="input_panel">
+      <div class="Keys">
+        <p>Name</p>
+        <input />
+      </div>
+      <div class="Keys">
+        <p>ID</p>
+        <input />
+      </div>
+      <div class="Keys">
+        <p>Date</p>
+        <input />
+      </div>
+      <div id="template">
+        <p>Template</p>
+        <textarea id="ta_template">
+{Name} 同学，您好：
+感谢您对自动化研究所何晖光老师团队的关注。
+请您于 {Date} 参加线上面试，面试软件为腾讯会议，会议 ID 为 {ID}。
+
+    此致
+    </textarea
+        >
+      </div>
+      <button id="submit" onclick="submit_onclick(this)">Submit</button>
+      <textarea id="ta_output"> </textarea>
+    </div>
+  </body>
+</html>
