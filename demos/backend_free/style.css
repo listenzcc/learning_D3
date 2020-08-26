@@ -1,16 +1,21 @@
 div#input_panel {
-  padding: 3px;
-  width: 500px;
-  outline: solid 1px;
+    padding: 3px;
+    width: 60%;
+    outline: solid 1px;
+    margin: 10px;
+}
+
+div.Keys {
+    width: 200px;
 }
 
 button {
-  margin-top: 20px;
-  margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 textarea#ta_template,
 textarea#ta_output {
-  width: 90%;
-  height: 100px;
+    width: 90%;
+    height: 100px;
 }
