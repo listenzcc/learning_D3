@@ -1,21 +1,27 @@
-div#input_panel {
-    padding: 3px;
-    width: 60%;
-    outline: solid 1px;
-    margin: 10px;
+div.Dump {
+  padding: 3px;
+  width: 80%;
+  outline: solid 1px;
+  margin: 10px;
 }
 
 div.Keys {
-    width: 200px;
+  width: 200px;
+}
+
+div#history {
+  height: 300px;
+  overflow-y: scroll;
 }
 
 button {
-    margin-top: 10px;
-    margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+textarea.History,
 textarea#ta_template,
 textarea#ta_output {
-    width: 90%;
-    height: 100px;
+  width: 90%;
+  height: 100px;
 }
