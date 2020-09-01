@@ -1,0 +1,33 @@
+div {
+  padding: 0px;
+  margin: 2px;
+  margin-bottom: 4px;
+  outline: solid 1px;
+}
+
+div.Input {
+  width: 100%;
+}
+
+div.Layout {
+  width: 100%;
+  height: 80%;
+  /* overflow-y: scroll; */
+}
+
+div.Column {
+  width: 100%;
+  /* height: 90%; */
+  float: left;
+}
+
+input.URL {
+  width: 70%;
+  height: 20px;
+}
+
+iframe.Inner {
+  height: 1000px;
+  width: 99%;
+  overflow: scroll;
+}

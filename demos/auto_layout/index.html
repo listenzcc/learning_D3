@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+  <head>
+    <title>Auto Layout Demo</title>
+    <script src="js/reuseable.js"></script>
+    <script src="js/private.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="Input">
+      <h1>New column</h1>
+      <input type="text" class="URL" onchange="new_column(this)" id="new" />
+    </div>
+
+    <div class="Layout">
+      <div class="Column">
+        <input type="text" class="URL" onchange="refresh(this)" />
+        <button onclick="close_column(this)">X</button>
+        <iframe class="Inner" src="https://cn.bing.com"></iframe>
+      </div>
+    </div>
+  </body>
+</html>
