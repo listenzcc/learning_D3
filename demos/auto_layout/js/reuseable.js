@@ -3,6 +3,10 @@
 
 function mk_url(url) {
   // Make sure [url] is a valid URL
+  if (url.length == 0) {
+    url = "about:blank";
+    return url;
+  }
 
   if (url.startsWith("https://")) {
     // It seems all right

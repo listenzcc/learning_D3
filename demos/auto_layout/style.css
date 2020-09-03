@@ -5,10 +5,6 @@ div {
   outline: solid 1px;
 }
 
-div.Input {
-  width: 100%;
-}
-
 div.Layout {
   width: 100%;
   height: 80%;
@@ -19,6 +15,11 @@ div.Column {
   width: 100%;
   /* height: 90%; */
   float: left;
+}
+
+div#top_panel {
+  width: 100%;
+  height: 90px;
 }
 
 input.URL {

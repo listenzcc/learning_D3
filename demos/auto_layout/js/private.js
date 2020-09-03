@@ -1,32 +1,41 @@
 // File: private.js
 // Aim: Private toolbox
 
-function refresh(obj) {
+function parent(obj) {
+  // Get the parent element
+  return obj.parentElement;
+}
+
+function refresh_column(obj) {
   // Refresh the iframe behind [obj]
   console.log("Refresh -------------------");
   console.log(obj);
 
+  // It should be a div.Column
+  let column = parent(obj);
+  let input = column.getElementsByTagName("input")[0];
+  let iframe = column.getElementsByTagName("iframe")[0];
+
   // Get value as URL
-  obj.value = mk_url(obj.value);
-  var url = obj.value;
+  input.value = mk_url(input.value);
+  var url = input.value;
 
   // Refresh the iframe behind
-  let column = obj.parentElement;
-  let iframe = column.getElementsByTagName("iframe")[0];
+  iframe.src = "about:blank";
   iframe.src = mk_url(url);
 }
 
-function resize_columns(columns, n) {
-  // Resize [columns] as there [n] columns
-  console.log("Resize columns ---------------");
-  console.log(columns);
+function close_column(obj) {
+  // Close the column
+  console.log("Close --------------------");
+  console.log(obj);
 
-  var width = String(int(99 / n)) + "%";
-  for (var i = 0; i < columns.length; i++) {
-    columns[i].style.width = width;
-  }
+  let column = parent(obj);
+  column.remove();
 
-  return width;
+  // Re-size current columns
+  let columns = document.getElementsByClassName("Column");
+  resize_columns(columns, -1);
 }
 
 function new_column(obj) {
@@ -38,17 +47,10 @@ function new_column(obj) {
   obj.value = mk_url(obj.value);
   var url = obj.value;
 
-  // Re-size current columns
-  let columns = document.getElementsByClassName("Column");
-  var n = columns.length;
-  var width = resize_columns(columns, n + 1);
-
   // Append new column
   let div = d3.select("div.Layout");
-  let column = div
-    .append("div")
-    .attr("class", "Column")
-    .attr("style", "width: " + width);
+  let column = div.append("div").attr("class", "Column");
+  // .attr("style", "width: " + width);
 
   // Append <input> into column
   let input = column
@@ -56,28 +58,41 @@ function new_column(obj) {
     .attr("type", "text")
     .attr("class", "URL")
     .attr("value", url)
-    .attr("onchange", "refresh(this)");
+    .attr("onchange", "refresh_column(this)");
 
   // Append <button> into column
+  // Refresh button
+  column.append("button").text("R").attr("onclick", "refresh_column(this)");
+  // Close button
   column.append("button").text("X").attr("onclick", "close_column(this)");
 
   // Append <iframe> into column
   column.append("iframe").attr("class", "Inner");
 
   // Refresh the column
-  refresh(input._groups[0][0]);
+  refresh_column(input._groups[0][0]);
+
+  // Resize columns
+  let columns = document.getElementsByClassName("Column");
+  resize_columns(columns, -1);
 }
 
-function close_column(obj) {
-  // Close the column
-  console.log("Close --------------------");
-  console.log(obj);
+function resize_columns(columns, n) {
+  // Resize [columns] as there [n] columns
+  // n == -1 means auto compute column counts
+  console.log("Resize columns ---------------");
+  console.log(columns);
 
-  let column = obj.parentElement;
-  column.remove();
+  if (n == -1) {
+    n = columns.length;
+  }
 
-  // Re-size current columns
-  let columns = document.getElementsByClassName("Column");
-  var n = columns.length;
-  resize_columns(columns, n);
+  var width = String(99 / n) + "%";
+  for (var i = 0; i < columns.length; i++) {
+    columns[i].style.width = width;
+    columns[i].getElementsByTagName("iframe")[0].style.height =
+      String(window.innerHeight - 120 - 40) + "px";
+  }
+
+  return width;
 }

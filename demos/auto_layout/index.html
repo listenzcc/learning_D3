@@ -10,17 +10,57 @@
   </head>
 
   <body>
-    <div class="Input">
+    <!-- <div id="dropContainer" style="border: 1px solid black; height: 100px">
+      Drop Here
+    </div>
+    <input type="file" id="fileInput" />
+    <script>
+      dropContainer.ondragover = dropContainer.ondragenter = function (evt) {
+        evt.preventDefault();
+      };
+
+      dropContainer.ondrop = function (evt) {
+        // pretty simple -- but not for IE :(
+        fileInput.files = evt.dataTransfer.files;
+
+        // If you want to use some of the dropped files
+        const dT = new DataTransfer();
+        dT.items.add(evt.dataTransfer.files[0]);
+        dT.items.add(evt.dataTransfer.files[3]);
+        fileInput.files = dT.files;
+
+        evt.preventDefault();
+      };
+    </script> -->
+
+    <div id="top_panel">
       <h1>New column</h1>
-      <input type="text" class="URL" onchange="new_column(this)" id="new" />
+      <input
+        type="text multiple file"
+        class="URL"
+        onchange="new_column(this)"
+        id="new_input"
+      />
     </div>
 
     <div class="Layout">
       <div class="Column">
-        <input type="text" class="URL" onchange="refresh(this)" />
+        <input type="text" class="URL" onchange="refresh_column(this)" />
+        <button onclick="refresh_column(this)">R</button>
         <button onclick="close_column(this)">X</button>
         <iframe class="Inner" src="https://cn.bing.com"></iframe>
       </div>
     </div>
+
+    <script>
+      window.onresize = function () {
+        let columns = document.getElementsByClassName("Column");
+        resize_columns(columns, -1);
+      };
+      window.onload = function () {
+        let columns = document.getElementsByClassName("Column");
+        resize_columns(columns, -1);
+      };
+    </script>
   </body>
 </html>
