@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+  <head>
+    <title>Test demo</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+      div {
+        border: 3px solid rebeccapurple;
+        padding: 5px;
+        margin: 3px;
+        height: 500px;
+        overflow-y: scroll;
+      }
+      p {
+        font-family: monospace;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      tr,
+      th,
+      td {
+        border: 1px solid gray;
+        padding: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Test Demo</h1>
+    <p>Use console to program</p>
+    <div>
+      <h2>Bands with padding</h2>
+      <p>
+        |--Padding--|--Band--|--Padding--|--Band--|--Padding--|--Band--|--Padding--|--Band--|--Padding--|
+      </p>
+      <p>
+        |-----------------------------------------------------------------------------------------------|
+      </p>
+      <p>
+        ------------|--------------------|--------------------|--------------------|---------------------
+      </p>
+
+      <h2>Bands with padding of inner</h2>
+      <p>
+        |--Band--|--Padding--|--Band--|--Padding--|--Band--|--Padding--|--Band--|
+      </p>
+      <p>
+        |-----------------------------------------------------------------------|
+      </p>
+      <p>
+        |--------------------|--------------------|--------------------|---------
+      </p>
+
+      <h2>Bands with padding of outer</h2>
+      <p>|--Padding--|--Band--|--Band--|--Band--|--Band--|--Padding--|</p>
+      <p>|-----------------------------------------------------------|</p>
+      <p>------------|--------|--------|--------|---------------------</p>
+
+      <h2>Length of band and padding</h2>
+      <p>Padding / (Band + Padding) = padding_ratio</p>
+    </div>
+    <div>
+      <h2>Padding estimation</h2>
+
+      <h3>Input of Num</h3>
+      <input
+        type="range"
+        value="6"
+        min="3"
+        max="20"
+        step="1"
+        onchange="num=parseInt(this.value); compute(num, _min, _max, padding)"
+      />
+
+      <h3>Input of Padding ratio</h3>
+      <input
+        type="range"
+        value="0.7"
+        min="0"
+        max="1"
+        step="0.1"
+        onchange="padding=parseFloat(this.value); compute(num, _min, _max, padding)"
+      />
+
+      <div id="paddingEstimation"></div>
+    </div>
+    <script>
+      // -----------------------------------------------
+      // Settings
+      var num = 6;
+      var _min = 0;
+      var _max = 100;
+      var padding = 0.7; // padding ratio
+
+      function compute(num, min, max, padding) {
+        console.log(num, min, max, padding);
+        let a = document.getElementById("paddingEstimation");
+        var count = a.childElementCount;
+        for (var i = 0; i < count; i++) {
+          a.children[0].remove();
+        }
+
+        let div = d3.select("#paddingEstimation");
+        div.append("p").text("Num:" + num + ", padding ratio: " + padding);
+
+        // -----------------------------------------------
+        // Setup domain
+        var domain = [];
+        for (var i = 0; i < num; i++) {
+          domain[i] = String.fromCharCode(i + 97);
+        }
+
+        let table = d3.select("#paddingEstimation").append("table");
+
+        table
+          .append("thead")
+          .append("tr")
+          .selectAll("th")
+          .data(["Mode", "Name", "Value"])
+          .enter()
+          .append("th")
+          .text(
+            (d = function (d) {
+              return d;
+            })
+          );
+
+        // -----------------------------------------------
+        var length = max - min;
+        // Padding
+        var gap = length / (num + padding);
+        var estimation = {
+          Gap: gap,
+          Position0: gap * padding,
+        };
+        console.log("Bands_padding:\n", estimation);
+
+        for (var name in estimation) {
+          table
+            .append("tbody")
+            .append("tr")
+            .selectAll("td")
+            .data(["All", name, estimation[name]])
+            .enter()
+            .append("td")
+            .text(
+              (d = function (d) {
+                return d;
+              })
+            );
+        }
+
+        // PaddingInner
+        gap = length / (num - padding);
+        estimation = {
+          Gap: gap,
+          Position0: 0,
+        };
+        console.log("Bands_paddingInner:\n", estimation);
+
+        for (var name in estimation) {
+          table
+            .append("tbody")
+            .append("tr")
+            .selectAll("td")
+            .data(["Inner", name, estimation[name]])
+            .enter()
+            .append("td")
+            .text(
+              (d = function (d) {
+                return d;
+              })
+            );
+        }
+
+        // PaddingOuter
+        gap = length / (num + padding * 2);
+        estimation = {
+          Gap: gap,
+          Position0: gap * padding,
+        };
+        console.log("Bands_paddingOuter:\n", estimation);
+
+        for (var name in estimation) {
+          table
+            .append("tbody")
+            .append("tr")
+            .selectAll("td")
+            .data(["Outer", name, estimation[name]])
+            .enter()
+            .append("td")
+            .text(
+              (d = function (d) {
+                return d;
+              })
+            );
+        }
+
+        // -----------------------------------------------
+        // Generate paddings using D3
+        var raw_bands = d3.scaleBand().domain(domain).range([min, max]);
+        var bands_padding = raw_bands.copy().padding(padding);
+        var bands_padding_inner = raw_bands.copy().paddingInner(padding);
+        var bands_padding_outer = raw_bands.copy().paddingOuter(padding);
+
+        // -----------------------------------------------
+        // Display function
+        function display(bands, title) {
+          // Display generated [bands] using [title]
+          console.log("----", title, "------------------------------");
+          var key = "";
+          var position = undefined;
+          var latest_position = 0;
+          var width = position - latest_position;
+          for (var d in domain) {
+            latest_position = position;
+            key = domain[d];
+            position = bands(key);
+            width = position - latest_position;
+            console.log(
+              key,
+              ":",
+              position,
+              "[from:",
+              latest_position,
+              ", gap:",
+              width,
+              "]"
+            );
+          }
+        }
+
+        // -----------------------------------------------
+        // Display bands
+        //   display(raw_bands, "RawBands");
+        display(bands_padding, "Bands_padding");
+        display(bands_padding_inner, "Bands_paddingInner");
+        display(bands_padding_outer, "Bands_paddingOuter");
+      }
+
+      compute(num, _min, _max, padding);
+    </script>
+  </body>
+</html>
