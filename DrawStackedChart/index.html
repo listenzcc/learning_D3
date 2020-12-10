@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Draw stacked chart</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Draw stacked chart</h1>
+    </div>
+    <div id="canvas"></div>
+    <script>
+        console.log(d3.version);
+        // Data
+        const values = [
+            [3, 4, 5, 9],
+            [4, 2, 8, 2],
+            [7, 2, 3, 6],
+        ]
+        const names = [
+            'Apple',
+            'Orange',
+            'Banana',
+        ]
+        const colors = [
+            'Red',
+            'Green',
+            'Blue',
+        ]
+        const count = 3
+        const dim = 4
+
+        // Graph size
+        const height = 300
+        const width = 400
+        const padding = 10
+
+        // Chart size
+        const expand = 0.6
+        const ratio = 20
+
+        // Graph size calculation
+        // const _top = height - padding
+        // const _bottom = padding
+
+        const _top = padding
+        const _bottom = height - padding
+
+        const _left = padding
+        const _right = width - padding
+        const reversed = _bottom > _top
+
+        // Chart size calculation
+        const _width = (_right - _left) / dim
+
+        // Init svg
+        let svg = d3.select('#canvas').append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('style', 'background-color: cornsilk')
+
+        // Draw data
+        let y_offset = [];
+        for (let i = 0; i < dim; i++) {
+            y_offset[i] = 0;
+        }
+        function get_y(d, i) {
+            let h = d * ratio
+            if (reversed) {
+                y_offset[i] += h
+                return _bottom - y_offset[i]
+            } else {
+                let _y = y_offset[i]
+                y_offset[i] += h
+                return _bottom + _y
+            }
+        }
+        for (let i = 0; i < count; i++) {
+            console.log(y_offset)
+            svg.append('g')
+                .selectAll('rect')
+                .data(values[i])
+                .enter()
+                .append('rect')
+                .attr('class', function (d, i) {
+                    console.log(d, i)
+                    return d
+                })
+                .attr('x', function (d, i) {
+                    return _left + (i + 0.5) * _width - _width * expand * 0.5
+                })
+                .attr('width', _width * expand)
+                .attr('y', function (d, i) {
+                    return get_y(d, i)
+                })
+                .attr('height', function (d, i) {
+                    return d * ratio
+                })
+                .attr('style', function (d) {
+                    return 'fill:' + colors[i % colors.length]
+                })
+        }
+
+        // X-axis
+        svg.append('line')
+            .attr('x1', _left)
+            .attr('y1', _bottom)
+            .attr('x2', _right)
+            .attr('y2', _bottom)
+            .attr('style', 'stroke: black; stroke-width: 2')
+
+        // Y-axis
+        svg.append('line')
+            .attr('x1', _left)
+            .attr('y1', _bottom)
+            .attr('x2', _left)
+            .attr('y2', _top)
+            .attr('style', 'stroke: black; stroke-width: 2')
+
+
+    </script>
+</body>
+
+</html>
