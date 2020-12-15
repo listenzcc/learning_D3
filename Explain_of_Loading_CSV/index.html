@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+  <head>
+    <title>Example of Loading CSV</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style type="text/css">
+      p {
+        font-size: 20px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Example of Loading CSV</h1>
+    <div id="main-area"></div>
+    <script>
+      console.log(d3.version);
+      d3.csv("./table.csv", function (rawData) {
+        console.log("----------------------------------------------");
+        console.log(d3.stack(rawData));
+        console.log(rawData);
+        let data = [];
+        for (let c in rawData) {
+          data.push(c + "-" + rawData[c]);
+        }
+        let div = d3.select("#main-area");
+
+        let subdiv = div.append("div");
+
+        subdiv
+          .selectAll("p")
+          .data(data)
+          .enter()
+          .append("p")
+          .text(function (d) {
+            return d;
+          });
+
+        div.append("p").text("--------------------------");
+        console.log("==============================================");
+      });
+    </script>
+  </body>
+</html>
