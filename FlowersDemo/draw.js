@@ -87,6 +87,7 @@ for (let i = 0; i < 7; i++) {
 
     g.append('g')
         .append('text')
+        .attr('style', 'fill: white')
         .text(color + ', ' + n_petals)
 
     g.append('g')
