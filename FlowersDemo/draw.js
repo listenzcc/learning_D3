@@ -6,7 +6,12 @@ let height = 800
 let padding = 100
 let svg = d3.select('#canvas').append('svg')
 let defs = svg.append('defs');
-let colors = ['LightPink', 'Peru', 'HotPink', 'DeepPink', 'RosyBrown'];
+// let colors = ['LightPink', 'Peru', 'HotPink', 'DeepPink', 'RosyBrown'];
+// let colors = cssColors
+let colors = []
+for (let c in cssColors) {
+    colors.push(c)
+}
 
 /**
  * * Immediate Function
@@ -82,7 +87,7 @@ for (let i = 0; i < 7; i++) {
 
     g.append('g')
         .append('text')
-        .text(color)
+        .text(color + ', ' + n_petals)
 
     g.append('g')
         .append('path')
