@@ -1,25 +1,79 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
 <html lang="en">
-    <head>
-        <title>Color Scheme</title>
-        <script src="https://d3js.org/d3.v6.min.js"></script>
-        <script src="./drawers.js"></script>
-    </head>
+  <head>
+    <title>Color Scheme</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="./drawers.js"></script>
+  </head>
 
-    <body>
-        <div>
-            <h1>Color Scheme</h1>
-        </div>
-        <svg id="canvas" width="600" height="500" style="background-color: silver"></svg>
-        <script>
-            let size = [400, 400];
-            let offset = [20, 20];
-            let count = 5;
-            let color = 'yellow';
+  <body>
+    <div>
+      <h1>Color Scheme</h1>
+    </div>
 
-            console.log(add_colorScheme_rect_sl_view('#canvas', offset, size, 'yellow', 20));
-            console.log(add_colorScheme_rect_sl_view('#canvas', offset, size, 'blue', 50));
-        </script>
-    </body>
+    <div>
+      <svg
+        id="canvas"
+        width="600"
+        height="500"
+        style="background-color: silver"
+      ></svg>
+    </div>
+
+    <div style="display: flex">
+      <input
+        id="input-1"
+        type="range"
+        value="10"
+        min="10"
+        max="100"
+        step="10"
+        onchange="input_onchange()"
+      />
+      <p id="input-1-p"></p>
+    </div>
+
+    <div style="display: flex">
+      <input
+        id="input-2"
+        type="range"
+        value="45"
+        min="0"
+        max="359"
+        step="1"
+        onchange="input_onchange()"
+      />
+      <p id="input-2-p"></p>
+    </div>
+
+    <script>
+      let size = [400, 400];
+      let offset = [150, 20];
+      let count = document.getElementById("input-1").value;
+      let color = "blue";
+      let canvasName = "#canvas";
+
+      // console.log(add_colorScheme_rect_sl_view('#canvas', offset, size, color, count));
+
+      let colors = new_colorScheme_rect_hue_view(
+        canvasName,
+        [20, 20],
+        [50, 400],
+        parseInt(document.getElementById("input-2").max) + 1
+      );
+
+      function input_onchange() {
+        let count = document.getElementById("input-1").value;
+        let value = document.getElementById("input-2").value;
+        document.getElementById("input-1-p").innerHTML = count;
+        document.getElementById("input-2-p").innerHTML = value;
+        let color = colors[value].color;
+        let y = colors[value].y;
+        document.getElementById("hue-position").setAttribute("y", y);
+        new_colorScheme_rect_sl_view(canvasName, offset, size, color, count);
+      }
+      input_onchange();
+    </script>
+  </body>
 </html>
