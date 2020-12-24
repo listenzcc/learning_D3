@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html lang="en">
+    <head>
+        <title>Color Scheme</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <script src="./drawers.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h1>Color Scheme</h1>
+        </div>
+        <svg id="canvas" width="600" height="500" style="background-color: silver"></svg>
+        <script>
+            let size = [400, 400];
+            let offset = [20, 20];
+            let count = 10;
+            let color = 'yellow';
+
+            add_colorScheme_rect_sl_view('#canvas', offset, size, color, count);
+        </script>
+    </body>
+</html>
