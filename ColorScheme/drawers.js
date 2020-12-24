@@ -23,18 +23,21 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
         return;
     }
 
-    // Init the defs
-    svg.selectAll('defs').data([undefined]).enter().append('defs').exit().remove();
-
     // Init the layer
-    let layer = svg
-        .selectAll('#rect-sl-view')
+    svg.selectAll('#rect-sl-view')
         .data(['translate(' + offset[0] + ',' + offset[1] + ')'])
         .enter()
         .append('g')
         .attr('id', 'rect-sl-view')
         .attr('transform', (d) => d);
 
+    let layer = svg.select('#rect-sl-view');
+
+    // Init the defs
+    layer.selectAll('defs').data([undefined]).enter().append('defs');
+
+    layer.selectAll('rect').remove();
+    layer.select('defs').selectAll('linearGradient').remove();
     // Draw rect on the layer
     layer.append('rect').attr('fill', 'black').attr('height', height).attr('width', width);
 
@@ -42,7 +45,7 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
     let scale = d3.scaleLinear().domain([0, count]).range([0, width]);
 
     // Interpolate of color in vertical(y-axis) direction
-    let interpolate = d3.interpolateHsl('white', 'red');
+    let interpolate = d3.interpolateHsl('white', color);
     let getColor = function (i) {
         let scale = d3
             .scaleLinear()
@@ -65,7 +68,9 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
         gratings.push(table);
     }
 
-    svg.select('defs')
+    // Add linearGradient gratings
+    layer
+        .select('defs')
         .selectAll('linearGradient')
         .data(gratings)
         .enter()
@@ -85,8 +90,8 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
         .attr('offset', (d) => d.offset)
         .attr('stop-color', (d) => d.color);
 
+    // Add gratings
     layer
-        .append('g')
         .selectAll('rect')
         .data(gratings)
         .enter()
