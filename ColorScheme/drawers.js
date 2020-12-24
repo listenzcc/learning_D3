@@ -36,10 +36,11 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
     // Init the defs
     layer.selectAll('defs').data([undefined]).enter().append('defs');
 
-    layer.selectAll('rect').remove();
+    layer.selectAll('g').remove();
     layer.select('defs').selectAll('linearGradient').remove();
+
     // Draw rect on the layer
-    layer.append('rect').attr('fill', 'black').attr('height', height).attr('width', width);
+    layer.append('g').append('rect').attr('fill', 'black').attr('height', height).attr('width', width);
 
     // Scale of gratings in horizontal(x-axis) direction
     let scale = d3.scaleLinear().domain([0, count]).range([0, width]);
@@ -92,6 +93,7 @@ function add_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
 
     // Add gratings
     layer
+        .append('g')
         .selectAll('rect')
         .data(gratings)
         .enter()
