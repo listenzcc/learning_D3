@@ -13,6 +13,7 @@
     </div>
 
     <div>
+      <p id="color-info"></p>
       <svg
         id="canvas"
         width="600"
@@ -25,7 +26,7 @@
       <input
         id="input-1"
         type="range"
-        value="10"
+        value="60"
         min="10"
         max="100"
         step="10"
@@ -70,7 +71,26 @@
         document.getElementById("input-2-p").innerHTML = value;
         let color = colors[value].color;
         let y = colors[value].y;
-        document.getElementById("hue-position").setAttribute("y", y);
+        let hsl = d3.hsl(color);
+        hsl.h = (180 + hsl.h) % 360;
+        document.getElementById("hue-position").setAttribute("y", y - 5);
+        document
+          .getElementById("hue-position")
+          .setAttribute("stroke", hsl.toString());
+
+        let info = function (hsl) {
+          return (
+            "hsl(" +
+            hsl.h.toFixed(2) +
+            ", " +
+            hsl.s.toFixed(2) +
+            ", " +
+            hsl.l.toFixed(2) +
+            "), " +
+            hsl.toString()
+          );
+        };
+        document.getElementById("color-info").innerHTML = info(hsl);
         new_colorScheme_rect_sl_view(canvasName, offset, size, color, count);
       }
       input_onchange();

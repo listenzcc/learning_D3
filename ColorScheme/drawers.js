@@ -29,6 +29,7 @@ function new_colorScheme_rect_hue_view(canvasName, offset, size, count) {
   let layer = svg.select("#rect-hue-view");
 
   let scale = d3.scaleLinear().domain([0, count]).range([0, height]);
+  let scale_r = d3.scaleLinear().domain([0, height]).range([0, count]);
 
   let getColor = function (i) {
     let scale = d3.scaleLinear().domain([0, count]).range([0, 1]);
@@ -60,7 +61,19 @@ function new_colorScheme_rect_hue_view(canvasName, offset, size, count) {
     .attr("height", (d) => d.height)
     .attr("width", width)
     .attr("x", 0)
-    .attr("y", (d) => d.y);
+    .attr("y", (d) => d.y)
+    .on("mouseover", function (event) {
+      d3.select(this)
+        .transition(10)
+        .attr("width", width * 2);
+      document.getElementById("input-2").value = scale_r(
+        event.offsetY - offset[1]
+      );
+      input_onchange();
+    })
+    .on("mouseleave", function (event) {
+      d3.select(this).transition(10).attr("width", width);
+    });
 
   // Add arrow
   layer
@@ -91,6 +104,8 @@ function new_colorScheme_rect_hue_view(canvasName, offset, size, count) {
  *                and the left-top corner will be colored with white (zero saturation and full lightness).
  */
 function new_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
+  let hue = d3.hsl(color).h;
+
   // Parse args
   let width = size[0];
   let height = size[1];
@@ -135,10 +150,18 @@ function new_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
   let scale = d3.scaleLinear().domain([0, count]).range([0, width]);
 
   // Interpolate of color in vertical(y-axis) direction
-  let interpolate = d3.interpolateHsl("white", color);
+  // let interpolate = d3.interpolateHsl("white", color);
+  let interpolate1 = d3.interpolateHslLong(
+    d3.hsl(hue, 0, 0),
+    d3.hsl(hue, 0, 1)
+  );
+  let interpolate2 = d3.interpolateHslLong(
+    d3.hsl(hue, 1, 0),
+    d3.hsl(hue, 1, 1)
+  );
   let getColor = function (i) {
     let scale = d3.scaleLinear().domain([0, count]).range([0, 1]);
-    return interpolate(scale(i));
+    return [interpolate1(scale(i)), interpolate2(scale(i))];
   };
 
   // Setup color dataset
@@ -169,8 +192,8 @@ function new_colorScheme_rect_sl_view(canvasName, offset, size, color, count) {
     .attr("y2", "0.0")
     .selectAll("stop")
     .data((d) => [
-      { color: "black", offset: "0" },
-      { color: d.color.toString(), offset: "1" },
+      { color: d.color[0].toString(), offset: "0" },
+      { color: d.color[1].toString(), offset: "1" },
     ])
     .enter()
     .append("stop")
