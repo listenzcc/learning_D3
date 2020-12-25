@@ -1,99 +1,146 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
 <html lang="en">
-  <head>
+
+<head>
     <title>Color Scheme</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="./drawers.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div>
-      <h1>Color Scheme</h1>
+        <h1>Color Scheme</h1>
     </div>
 
     <div>
-      <p id="color-info"></p>
-      <svg
-        id="canvas"
-        width="600"
-        height="500"
-        style="background-color: silver"
-      ></svg>
+        <p id="color-info"></p>
+        <svg id="canvas" width="600" height="500" style="background-color: silver"></svg>
     </div>
 
     <div style="display: flex">
-      <input
-        id="input-1"
-        type="range"
-        value="60"
-        min="10"
-        max="100"
-        step="10"
-        onchange="input_onchange()"
-      />
-      <p id="input-1-p"></p>
+        <p>SL view counting:</p>
+        <input id="input-1" type="range" value="100" min="10" max="200" step="10" onchange="input_onchange()" />
+        <p id="input-1-p"></p>
     </div>
 
     <div style="display: flex">
-      <input
-        id="input-2"
-        type="range"
-        value="45"
-        min="0"
-        max="359"
-        step="1"
-        onchange="input_onchange()"
-      />
-      <p id="input-2-p"></p>
+        <p>Hue value:</p>
+        <input id="input-2" type="range" value="45" min="0" max="359" step="1" onchange="input_onchange()" />
+        <p id="input-2-p"></p>
+    </div>
+
+    <div style="display: flex">
+        <p>Saturation value:</p>
+        <input id="input-3" type="range" value="100" min="0" max="100" onchange="input_onchange()" />
+        <p id="input-3-p"></p>
+    </div>
+
+    <div style="display: flex">
+        <p>Lightness value:</p>
+        <input id="input-4" type="range" value="50" min="0" max="100" onchange="input_onchange()" />
+        <p id="input-4-p"></p>
     </div>
 
     <script>
-      let size = [400, 400];
-      let offset = [150, 20];
-      let count = document.getElementById("input-1").value;
-      let color = "blue";
-      let canvasName = "#canvas";
-
-      // console.log(add_colorScheme_rect_sl_view('#canvas', offset, size, color, count));
-
-      let colors = new_colorScheme_rect_hue_view(
-        canvasName,
-        [20, 20],
-        [50, 400],
-        parseInt(document.getElementById("input-2").max) + 1
-      );
-
-      function input_onchange() {
+        // Setup the parameters of the sl-view-rect
+        let size = [400, 400];
+        let offset = [150, 20];
         let count = document.getElementById("input-1").value;
-        let value = document.getElementById("input-2").value;
-        document.getElementById("input-1-p").innerHTML = count;
-        document.getElementById("input-2-p").innerHTML = value;
-        let color = colors[value].color;
-        let y = colors[value].y;
-        let hsl = d3.hsl(color);
-        hsl.h = (180 + hsl.h) % 360;
-        document.getElementById("hue-position").setAttribute("y", y - 5);
-        document
-          .getElementById("hue-position")
-          .setAttribute("stroke", hsl.toString());
+        let canvasName = "#canvas";
 
-        let info = function (hsl) {
-          return (
-            "hsl(" +
-            hsl.h.toFixed(2) +
-            ", " +
-            hsl.s.toFixed(2) +
-            ", " +
-            hsl.l.toFixed(2) +
-            "), " +
-            hsl.toString()
-          );
-        };
-        document.getElementById("color-info").innerHTML = info(hsl);
-        new_colorScheme_rect_sl_view(canvasName, offset, size, color, count);
-      }
-      input_onchange();
+        // Init the hue-view-rect
+        let colors = new_colorScheme_rect_hue_view(
+            canvasName, [20, 20], [50, 400],
+            parseInt(document.getElementById("input-2").max) + 1
+        );
+
+        /**
+         * * Onchange method of inputs,
+         * * it is also the method of update the color scheme svg,
+         * * which means it will be called every time something is changed, and by someone who is changing
+         */
+        function input_onchange() {
+            // Get potentially changed values
+            let count = document.getElementById("input-1").value;
+            let value = document.getElementById("input-2").value;
+            let saturation = document.getElementById("input-3").value / 100;
+            let lightness = document.getElementById("input-4").value / 100;
+
+            // Update labels
+            document.getElementById("input-1-p").innerHTML = count;
+            document.getElementById("input-2-p").innerHTML = value;
+            document.getElementById("input-3-p").innerHTML = saturation;
+            document.getElementById("input-4-p").innerHTML = lightness;
+
+            // Get the color stuff in hue-view-rect
+            let color = colors[value].color;
+            let y = colors[value].y;
+            let hsl = d3.hsl(color);
+            hsl.s = saturation;
+            hsl.l = lightness;
+
+            // Update colorScheme info
+            let info = function(hsl) {
+                return (
+                    "hsl(" +
+                    hsl.h.toFixed(2) +
+                    ", " +
+                    hsl.s.toFixed(2) +
+                    ", " +
+                    hsl.l.toFixed(2) +
+                    "), " +
+                    hsl.toString()
+                );
+            };
+            document.getElementById("color-info").innerHTML = info(hsl);
+
+            // Update arrow of the hue-view-rect,
+            // it will be located to the position of the selected color,
+            // and use the opposite color against the selected color
+            // hsl_[r, s, l]: r, s, l refers reverse, smaller and greater respectively
+            let hsl_r = hsl.copy();
+            let hsl_s = hsl.copy();
+            let hsl_g = hsl.copy();
+            hsl_r.h = (180 + hsl_r.h) % 360;
+            hsl_s.h = (-30 + hsl_s.h) % 360;
+            hsl_g.h = (30 + hsl_g.h) % 360;
+
+            document
+                .getElementById("hue-position")
+                .setAttribute("stroke", hsl_r.toString());
+            document
+                .getElementById("hue-position")
+                .setAttribute("y", y - 5);
+
+            // Update the sl-view-rect
+            new_colorScheme_rect_sl_view(
+                canvasName,
+                offset,
+                size,
+                color,
+                count
+            );
+
+            let pos = document.getElementById("sl-position");
+            pos.setAttribute("x", lightness * size[0] - 5);
+            pos.setAttribute("y", (1 - saturation) * size[1] - 5);
+
+            new_colorBlocks_view(
+                canvasName, [20, 440], [50, 50], [
+                    hsl_s.toString(),
+                    hsl.toString(),
+                    hsl_g.toString(),
+                    "black",
+                    hsl_r.toString(),
+                    "white",
+                ]
+            );
+        }
+
+        // Call the main change handler immediately after the script is loaded
+        input_onchange();
     </script>
-  </body>
+</body>
+
 </html>
